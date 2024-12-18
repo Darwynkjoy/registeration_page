@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:registration/homepage.dart';
-import 'package:registration/login.dart';
 import 'package:registration/registerpage.dart';
 
 void main() {

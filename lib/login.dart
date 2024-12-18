@@ -7,15 +7,30 @@ class Loginpage extends  StatefulWidget{
   State<Loginpage> createState()=> _registerpageState();
 }
 class _registerpageState extends State<Loginpage>{
+TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-  loadname(String name,String password)async{
-    SharedPreferences prefs=await SharedPreferences.getInstance();
-    setState(() {
-      name=prefs.getString("name");
-      password=prefs.getString("password");
-    });
+  String _loginMessage = '';
+
+  Future<void> _login() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? storedUsername = prefs.getString('username');
+    String? storedPassword = prefs.getString('password');
+
+    if (storedUsername == usernameController.text &&
+        storedPassword == passwordController.text) {
+      setState(() {
+        _loginMessage = 'Login Successful!';
+        Navigator.push((context), MaterialPageRoute(builder: (context)=>Homepage()));
+      });
+    } else {
+      setState(() {
+        _loginMessage = 'Invalid credentials! Please try again.';
+      });
+    }
   }
-  @override
+@override
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
@@ -38,7 +53,7 @@ class _registerpageState extends State<Loginpage>{
 
             TextField(decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: "User name",
+              labelText: "Password",
             ),),
 
             SizedBox(height: 60,),
@@ -52,7 +67,6 @@ class _registerpageState extends State<Loginpage>{
                   backgroundColor: Colors.black
                 ),
                 onPressed: (){
-                  Navigator.push((context), MaterialPageRoute(builder: (context)=>Homepage()));
                 }, child: Text("Login",style: TextStyle(color: const Color.fromARGB(255, 0, 140, 255)),))),
           ],
         ),

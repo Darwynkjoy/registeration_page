@@ -7,15 +7,27 @@ class Registerpage extends  StatefulWidget{
   State<Registerpage> createState()=> _registerpageState();
 }
 class _registerpageState extends State<Registerpage>{
-  String name="";
-  String password="";
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-  Savedname(String name,String password)async{
-    SharedPreferences prefs=await SharedPreferences.getInstance();
-    setState(() {
-      prefs.setString("name", name);
-      prefs.setString("password", password);
-    });
+  String _registrationMessage = '';
+
+  Future<void> _register() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String username = usernameController.text;
+    String password = passwordController.text;
+    
+    if (username.isNotEmpty && password.isNotEmpty) {
+      await prefs.setString('username', username);
+      await prefs.setString('password', password);
+      setState(() {
+        _registrationMessage = 'Registration Successful!';
+      });
+    } else {
+      setState(() {
+        _registrationMessage = 'Please fill in both fields!';
+      });
+    }
   }
   @override
   Widget build(BuildContext context){
@@ -40,7 +52,7 @@ class _registerpageState extends State<Registerpage>{
 
             TextField(decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: "User name",
+              labelText: "Password",
             ),),
 
             SizedBox(height: 60,),
